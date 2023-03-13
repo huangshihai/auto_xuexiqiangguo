@@ -29,6 +29,10 @@ baidu_client_id = ''
 baidu_client_secret: ''
 
 
+def open_android():
+    os.startfile("C:/Users/huangsh/Desktop/夜神模拟器.lnk")
+
+
 # 运行hamibot
 def run_script(max_count=10):
     if pg.locateOnScreen(r"resource/img/xuexi.png"):
@@ -43,7 +47,7 @@ def run_script(max_count=10):
         print('运行hamibot成功！')
     elif max_count > 0:
         print("未检测到目标...，将继续重试%s次" % (max_count - 1))
-        time.sleep(random.randint(5, 10))
+        random_sleep(5, 10)
         run_script(max_count - 1)
 
 
@@ -153,5 +157,34 @@ def ocr():
     return baidu_ocr_api(image)
 
 
+def random_sleep(min_time=2, max_time=5):
+    time.sleep(random.randint(min_time, max_time))
+
+
+def click(img_name, max_count=10):
+    time.sleep(2)  # 这个可以用来防止操作过快
+    if pyautogui.locateOnScreen(r"resource/img/" + img_name + ".png"):
+        left, top, width, height = pyautogui.locateOnScreen(r"resource/img/" + img_name + ".png")  # 寻找运行hamibot的图标
+        center = pyautogui.center((left, top, width, height))  # 寻找图片的中心
+        pyautogui.click(center)
+        print('运行' + img_name + '成功！')
+    elif max_count > 0:
+        print("未检测到目标...，将继续重试%s次" % (max_count - 1))
+        random_sleep(5, 10)
+        click(img_name, max_count - 1)
+
+
+def init():
+    # 启动安卓模拟器
+    open_android()
+    random_sleep()
+    # 启动hamibot
+    click("hamibot")
+    random_sleep()
+    # 运行脚本
+    run_script()
+
+
 if __name__ == '__main__':
+    init()
     app.run(host='0.0.0.0')

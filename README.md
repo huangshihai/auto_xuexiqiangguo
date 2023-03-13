@@ -13,4 +13,6 @@
 
 1、clone仓库代码，修改main方法中的配置信息
 
-2、运行 python main.py
+2、安装Python 3.10
+
+3、双击run.bat
